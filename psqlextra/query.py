@@ -1,16 +1,15 @@
 from collections import OrderedDict
 from itertools import chain
 from typing import (
-    TYPE_CHECKING,
     Any,
     Dict,
-    Generic,
     Iterable,
     List,
     Optional,
     Tuple,
     TypeVar,
     Union,
+    Self,
 )
 
 from django.core.exceptions import SuspiciousOperation
@@ -24,24 +23,16 @@ from .introspect import model_from_cursor, models_from_cursor
 from .sql import PostgresInsertQuery, PostgresQuery
 from .types import ConflictAction
 
-if TYPE_CHECKING:
-    from django.db.models.constraints import BaseConstraint
-    from django.db.models.indexes import Index
+from django.db.models.constraints import BaseConstraint
+from django.db.models.indexes import Index
 
 ConflictTarget = Union[List[Union[str, Tuple[str]]], "BaseConstraint", "Index"]
 
 
 TModel = TypeVar("TModel", bound=models.Model, covariant=True)
 
-if TYPE_CHECKING:
-    from typing_extensions import Self
 
-    QuerySetBase = QuerySet[TModel]
-else:
-    QuerySetBase = QuerySet
-
-
-class PostgresQuerySet(QuerySetBase, Generic[TModel]):
+class PostgresQuerySet(QuerySet[TModel]):
     """Adds support for PostgreSQL specifics."""
 
     def __init__(self, model=None, query=None, using=None, hints=None):
