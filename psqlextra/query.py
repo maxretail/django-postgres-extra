@@ -9,8 +9,13 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
-    Self,
 )
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
+
 
 from django.core.exceptions import SuspiciousOperation
 from django.db import models, router
